@@ -1,0 +1,9 @@
+name: livestream
+task_prefix: "User: "
+task_file: data/livestream/tasks.json
+max_steps: 8
+num_fewshots: 3
+eval_configs:
+  k_folds: 2
+  k_folds_seed: 42
+ai_name: livestream host

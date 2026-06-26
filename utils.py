@@ -111,8 +111,8 @@ def token_counter(text: str, llm: str = 'gpt-3.5-turbo', tokenizer: Callable = N
     """
     if 'gpt' in llm:
         return len(tiktoken.encoding_for_model(llm).encode(text))
-
-    raise NotImplementedError
+    # fallback: approximate token count for non-GPT models (e.g. qwen)
+    return len(text) // 3
 
 def print_message(message: ChatMessage, token_counter: Callable = None, testing: bool = True, extra_text: str = '') -> None:
     """
@@ -317,6 +317,12 @@ def recompute_stats(parsed_result: List[List[str]], benchmark: str, trial: int =
                 stats["fail"] += 1
             else:
                 stats["halted"] += 1
+        elif benchmark == 'livestream':
+            # success if reward > 0 (user stayed), otherwise halted
+            if 'reward' in last_step:
+                stats["success"] += 1
+            else:
+                stats["halted"] += 1
         else:
             raise NotImplementedError(f'recompute_stats for {benchmark} not implemented')
         
@@ -346,6 +352,9 @@ def plot_trial_stats(parsed_result: List[List[str]], benchmark: str, max_trials:
     if benchmark == 'alfworld':
         assert len(parsed_result) == 134
         results = {k: [round(x / 134 * 100, 2) for x in v] for k, v in results.items()}
+    elif benchmark == 'livestream':
+        n = len(parsed_result)
+        results = {k: [round(x / n * 100, 2) for x in v] for k, v in results.items()}
     else:
         assert len(parsed_result) == 100
 

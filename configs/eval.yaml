@@ -1,7 +1,7 @@
 defaults:
   - _self_
-  - benchmark: hotpotqa
-  - agent: expel
+  - benchmark: livestream
+  - agent: rl_agent
   - override hydra/hydra_logging: disabled  
   - override hydra/job_logging: disabled    
 

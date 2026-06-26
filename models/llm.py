@@ -6,15 +6,19 @@ from langchain.schema import ChatMessage
 import openai
 
 
-class GPTWrapper:
-    def __init__(self, llm_name: str, openai_api_key: str, long_ver: bool):
+DASHSCOPE_OPENAI_BASE_URL = "https://dashscope.aliyuncs.com/compatible-mode/v1"
+
+
+class OpenAICompatibleWrapper:
+    def __init__(self, llm_name: str, api_key: str, long_ver: bool):
         self.model_name = llm_name
-        if long_ver:
+        if long_ver and 'gpt' in llm_name:
             llm_name = 'gpt-3.5-turbo-16k'
         self.llm = ChatOpenAI(
             model=llm_name,
             temperature=0.0,
-            openai_api_key=openai_api_key,
+            openai_api_key=api_key,
+            openai_api_base=DASHSCOPE_OPENAI_BASE_URL if 'qwen' in llm_name else None,
         )
 
     def __call__(self, messages: List[ChatMessage], stop: List[str] = [], replace_newline: bool = True) -> str:
@@ -35,8 +39,8 @@ class GPTWrapper:
             output = output.replace('\n', '')
         return output
 
+
 def LLM_CLS(llm_name: str, openai_api_key: str, long_ver: bool) -> Callable:
-    if 'gpt' in llm_name:
-        return GPTWrapper(llm_name, openai_api_key, long_ver)
-    else:
-        raise ValueError(f"Unknown LLM model name: {llm_name}")
+    if 'gpt' in llm_name or 'qwen' in llm_name:
+        return OpenAICompatibleWrapper(llm_name, openai_api_key, long_ver)
+    raise ValueError(f"Unknown LLM model name: {llm_name}")

@@ -1,0 +1,26 @@
+[
+  {
+    "task": "新用户刚进入直播间，先欢迎并引导聊天",
+    "env_kwargs": {
+      "creator_name": "主播A",
+      "persona_description": "热情、亲切、爱聊天"
+    },
+    "env_name": "livestream"
+  },
+  {
+    "task": "老用户回访，尝试延长对话轮次",
+    "env_kwargs": {
+      "creator_name": "主播A",
+      "persona_description": "热情、亲切、爱聊天"
+    },
+    "env_name": "livestream"
+  },
+  {
+    "task": "用户提到价格，分身要自然回应并继续聊",
+    "env_kwargs": {
+      "creator_name": "主播A",
+      "persona_description": "热情、亲切、爱聊天"
+    },
+    "env_name": "livestream"
+  }
+]

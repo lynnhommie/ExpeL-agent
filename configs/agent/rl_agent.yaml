@@ -1,4 +1,6 @@
-name: expel
+# RL Agent (ExpeL-based) 配置
+# 基于经验和规则学习的强化对话代理
+name: rl_agent
 llm: qwen-plus # default model name; can be overridden via LLM_MODEL in .env
 max_reflection_depth: 3
 max_num_rules: 20

@@ -2,6 +2,7 @@ from typing import Callable, List
 
 from . import alfworld
 from . import hotpotQA, fever, webshop
+from . import livestream
 from .templates.human import *
 from .templates.system import *
 
@@ -10,36 +11,42 @@ FEWSHOTS = dict(
     fever=fever.FEWSHOTS,
     alfworld=alfworld.FEWSHOTS,
     webshop=webshop.FEWSHOTS,
+    livestream=livestream.LIVESTREAM_FEWSHOTS,
 )
 REFLECTION_FEWSHOTS = dict(
     hotpotqa=hotpotQA.REFLECTION_FEWSHOTS,
     fever=None,#fever.REFLECTION_FEWSHOTS,
     alfworld=alfworld.REFLECTION_FEWSHOTS,
     webshop=webshop.REFLECTION_FEWSHOTS,
+    livestream=[],
 )
 SYSTEM_INSTRUCTION = dict(
     hotpotqa=hotpotQA.SYSTEM_INSTRUCTION,
     fever=fever.SYSTEM_INSTRUCTION,
     alfworld=alfworld.SYSTEM_INSTRUCTION,
     webshop=webshop.SYSTEM_INSTRUCTION,
+    livestream=livestream.LIVESTREAM_SYSTEM_INSTRUCTION,
 )
 SYSTEM_REFLECTION_INSTRUCTION = dict(
     hotpotqa=hotpotQA.SYSTEM_REFLECTION_INSTRUCTION,
     fever=None,#fever.SYSTEM_REFLECTION_INSTRUCTION,
     alfworld=None,#alfworld.SYSTEM_REFLECTION_INSTRUCTION,
     webshop=None,#webshop.SYSTEM_REFLECTION_INSTRUCTION,
+    livestream=livestream.LIVESTREAM_SYSTEM_INSTRUCTION,
 )
 HUMAN_INSTRUCTION = dict(
     hotpotqa=hotpotQA.HUMAN_INSTRUCTION,
     fever=fever.HUMAN_INSTRUCTION,
     alfworld=alfworld.HUMAN_INSTRUCTION,
     webshop=webshop.HUMAN_INSTRUCTION,
+    livestream=livestream.LIVESTREAM_HUMAN_INSTRUCTION,
 )
 HUMAN_REFLECTION_INSTRUCTION = dict(
     hotpotqa=hotpotQA.HUMAN_REFLECTION_INSTRUCTION,
     fever=None,
     alfworld=alfworld.HUMAN_REFLECTION_INSTRUCTION,
     webshop=webshop.HUMAN_REFLECTION_INSTRUCTION,
+    livestream=livestream.LIVESTREAM_HUMAN_INSTRUCTION,
 )
 SYSTEM_CRITIQUE_INSTRUCTION = dict(
     hotpotqa=dict(
@@ -48,7 +55,7 @@ SYSTEM_CRITIQUE_INSTRUCTION = dict(
     ),
     fever=dict(
         compare_existing_rules=None,
-        all_success_existing_riles=None
+        all_success_existing_rules=None
     ),
     alfworld=dict(
         compare_existing_rules=alfworld.SYSTEM_CRITIQUE_EXISTING_RULES_INSTRUCTION,
@@ -58,6 +65,7 @@ SYSTEM_CRITIQUE_INSTRUCTION = dict(
         compare_existing_rules=webshop.SYSTEM_CRITIQUE_EXISTING_RULES_INSTRUCTION,
         all_success_existing_rules=webshop.SYSTEM_CRITIQUE_ALL_SUCCESS_EXISTING_RULES_INSTRUCTION,
     ),
+    livestream=livestream.LIVESTREAM_SYSTEM_CRITIQUE_INSTRUCTIONS,
 )
 
 LLM_PARSER = dict(
@@ -66,6 +74,7 @@ LLM_PARSER = dict(
     fever=hotpotQA.LLM_PARSER,
     alfworld=alfworld.LLM_PARSER,
     webshop=webshop.LLM_PARSER,
+    livestream=livestream.LIVESTREAM_LLM_PARSER,
 )
 
 OBSERVATION_FORMATTER = dict(
@@ -74,6 +83,7 @@ OBSERVATION_FORMATTER = dict(
     fever=hotpotQA.OBSERVATION_FORMATTER,
     alfworld=alfworld.OBSERVATION_FORMATTER,
     webshop=webshop.OBSERVATION_FORMATTER,
+    livestream=livestream.LIVESTREAM_OBSERVATION_FORMATTER,
 )
 
 STEP_IDENTIFIER = dict(
@@ -82,6 +92,7 @@ STEP_IDENTIFIER = dict(
     fever=hotpotQA.STEP_IDENTIFIER,
     webshop=webshop.STEP_IDENTIFIER,
     alfworld=alfworld.STEP_IDENTIFIER,
+    livestream=livestream.LIVESTREAM_STEP_IDENTIFIER,
 )
 
 CYCLER = dict(
@@ -90,6 +101,7 @@ CYCLER = dict(
     # fever and hotpotQA has same format
     webshop=webshop.CYCLER,
     alfworld=alfworld.CYCLER,
+    livestream=livestream.LIVESTREAM_CYCLER,
 )
 REFLECTION_PREFIX = dict(
     hotpotqa=hotpotQA.REFLECTION_PREFIX,
@@ -97,6 +109,7 @@ REFLECTION_PREFIX = dict(
     alfworld=alfworld.REFLECTION_PREFIX,
     # same format as alfworld
     webshop=webshop.REFLECTION_PREFIX,
+    livestream=livestream.LIVESTREAM_REFLECTION_PREFIX,
 )
 PREVIOUS_TRIALS_FORMATTER=dict(
     hotpotqa=hotpotQA.PREVIOUS_TRIALS_FORMATTER,
@@ -104,6 +117,7 @@ PREVIOUS_TRIALS_FORMATTER=dict(
     alfworld=alfworld.PREVIOUS_TRIALS_FORMATTER,
     # same format as alfworld
     webshop=webshop.PREVIOUS_TRIALS_FORMATTER,
+    livestream=livestream.LIVESTREAM_PREVIOUS_TRIALS_FORMATTER,
 )
 
 STEP_STRIPPER = dict(
@@ -112,6 +126,7 @@ STEP_STRIPPER = dict(
     alfworld=alfworld.STEP_STRIPPER,
     # same format as alfworld
     webshop=webshop.STEP_STRIPPER,
+    livestream=livestream.LIVESTREAM_STEP_STRIPPER,
 )
 
 def STEP_CYCLER(benchmark: str, lines: str, cycler: Callable, step_identifier: Callable, stripper: Callable = lambda x, y: x) -> List[str]:

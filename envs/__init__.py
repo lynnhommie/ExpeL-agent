@@ -1,13 +1,26 @@
 import joblib
 import json
 import random
-import json
 
 from .base import BaseEnv
 from .hotpotqa.hotpotqa import QAEnv
-from .fever.fever import FeverEnv
-from .alfworld.alfworld import AlfworldEnv
-from .webshop.webshop import WebshopEnv
+from .livestream.livestream import LivestreamChatEnv
+
+try:
+    from .fever.fever import FeverEnv
+except Exception:
+    FeverEnv = None
+
+try:
+    from .alfworld.alfworld import AlfworldEnv
+except Exception:
+    AlfworldEnv = None
+
+try:
+    from .webshop.webshop import WebshopEnv
+except Exception:
+    WebshopEnv = None
+
 from utils import get_env_name_from_gamefile
 
 # Taken from ReAct Github
@@ -51,6 +64,16 @@ INIT_TASKS_FN = dict(
         'env_name': 'webshop'
         } for row in json.load(open(cfg.benchmark.task_file, "r"))
     ],
+    livestream=lambda cfg: [
+        {
+        'task': f'{cfg.benchmark.task_prefix}{row["task"]}',
+        'env_kwargs': {
+            'creator_name': 'host',
+            'persona_description': 'friendly and engaging livestream host'
+        },
+        'env_name': 'livestream'
+        } for row in json.load(open(cfg.benchmark.task_file, "r"))
+    ],
 )
 
-ENVS = dict(hotpotqa=QAEnv, fever=FeverEnv, alfworld=AlfworldEnv, webshop=WebshopEnv)
+ENVS = dict(hotpotqa=QAEnv, fever=FeverEnv, alfworld=AlfworldEnv, webshop=WebshopEnv, livestream=LivestreamChatEnv)

@@ -1,0 +1,10 @@
+{"rule_id": "s001", "category": "违法犯罪", "trigger": "违禁品、毒品、武器、诈骗", "action": "拒答并转移话题", "severity": "high"}
+{"rule_id": "s002", "category": "色情低俗", "trigger": "色情、黄色、性暗示", "action": "拒答并转移话题", "severity": "high"}
+{"rule_id": "s003", "category": "赌博", "trigger": "赌博、博彩、下注", "action": "拒答并转移话题", "severity": "high"}
+{"rule_id": "s004", "category": "国家安全", "trigger": "政治敏感、分裂、颠覆", "action": "拒答并转移话题", "severity": "high"}
+{"rule_id": "s005", "category": "未成年保护", "trigger": "未成年、诱导消费、不良内容", "action": "拒答并提示", "severity": "high"}
+{"rule_id": "s006", "category": "暴力", "trigger": "暴力、血腥、伤害他人", "action": "拒答并转移话题", "severity": "high"}
+{"rule_id": "s007", "category": "骚扰", "trigger": "骚扰、侮辱、歧视", "action": "警告并拒答", "severity": "medium"}
+{"rule_id": "s008", "category": "虚假信息", "trigger": "谣言、虚假医疗建议", "action": "声明无法确认并建议咨询专业人士", "severity": "medium"}
+{"rule_id": "s009", "category": "隐私", "trigger": "要求提供个人隐私信息", "action": "拒答并说明隐私保护", "severity": "medium"}
+{"rule_id": "s010", "category": "金融欺诈", "trigger": "投资建议、保本收益、借钱", "action": "拒答并提示风险", "severity": "high"}

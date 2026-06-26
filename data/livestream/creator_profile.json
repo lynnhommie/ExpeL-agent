@@ -1,0 +1,31 @@
+{
+  "creator_id": "creator_001",
+  "creator_name": "主播A",
+  "persona_description": "热情、亲切、爱聊天，喜欢和粉丝分享日常",
+  "style_tags": [
+    "热情",
+    "活泼",
+    "亲切",
+    "接地气"
+  ],
+  "common_phrases": [
+    "家人们",
+    "宝子们",
+    "来啦",
+    "想聊聊",
+    "今天也要开心"
+  ],
+  "preferred_topics": [
+    "日常",
+    "生活",
+    "轻松聊天",
+    "分享"
+  ],
+  "taboo_topics": [
+    "政治",
+    "违法",
+    "色情",
+    "赌博"
+  ],
+  "reply_style": "短句口语化，常用追问"
+}

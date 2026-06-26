@@ -29,6 +29,7 @@ from prompts import (
     PREVIOUS_TRIALS_FORMATTER,
     STEP_STRIPPER,
     CRITIQUE_SUMMARY_SUFFIX,
+    livestream,
 )
 from envs import ENVS, INIT_TASKS_FN
 from memory import (
@@ -41,10 +42,15 @@ from agent.reflect import Count
 
 @hydra.main(version_base=None, config_path="configs", config_name="train")
 def main(cfg : DictConfig) -> None:
+    llm_name = os.getenv('LLM_MODEL', cfg.agent.llm)
     if cfg.testing:
         openai_api_key = 'NO_KEY_FOR_TESTING'
     else:
-        openai_api_key = os.environ['OPENAI_API_KEY'] if 'OPENAI_API_KEY' in os.environ else getpass.getpass("Enter or paste your OpenAI API Key: ")
+        openai_api_key = (
+            os.getenv('QWEN_API_KEY')
+            or os.getenv('OPENAI_API_KEY')
+            or getpass.getpass("Enter or paste your API Key: ")
+        )
     LOG_PATH = Path('/'.join([cfg.log_dir, cfg.benchmark.name, cfg.agent_type]))
     LOG_PATH.mkdir(parents=True, exist_ok=True)
 
@@ -66,27 +72,48 @@ def main(cfg : DictConfig) -> None:
         out = {'log': '', 'dicts': [], 'true_log': f'{str(cfg)}'}
     log, dicts, true_log = out['log'], out['dicts'], out['true_log']
 
+    if cfg.benchmark.name == 'livestream':
+        system_instruction = livestream.LIVESTREAM_SYSTEM_INSTRUCTION
+        human_instruction = livestream.LIVESTREAM_HUMAN_INSTRUCTION
+        fewshots = livestream.LIVESTREAM_FEWSHOTS
+        reflection_fewshots = []
+        reflection_task_prompt = livestream.LIVESTREAM_REFLECTION_TASK_PROMPT
+        reflection_system_instruction = livestream.LIVESTREAM_SYSTEM_INSTRUCTION
+        system_critique_instructions = livestream.LIVESTREAM_SYSTEM_CRITIQUE_INSTRUCTIONS
+        human_critiques = livestream.LIVESTREAM_HUMAN_CRITIQUES
+        rule_template = livestream.LIVESTREAM_RULE_TEMPLATE
+    else:
+        system_instruction = SYSTEM_INSTRUCTION[cfg.benchmark.name]
+        human_instruction = HUMAN_INSTRUCTION[cfg.benchmark.name]
+        fewshots = FEWSHOTS[cfg.benchmark.name]
+        reflection_fewshots = REFLECTION_FEWSHOTS[cfg.benchmark.name]
+        reflection_task_prompt = HUMAN_REFLECTION_INSTRUCTION[cfg.benchmark.name]
+        reflection_system_instruction = SYSTEM_REFLECTION_INSTRUCTION[cfg.benchmark.name]
+        system_critique_instructions = SYSTEM_CRITIQUE_INSTRUCTION[cfg.benchmark.name]
+        human_critiques = HUMAN_CRITIQUES
+        rule_template = RULE_TEMPLATE[cfg.benchmark.name]
+
     react_agent = AGENT[cfg.agent_type](
         name=cfg.ai_name,
-        system_instruction=SYSTEM_INSTRUCTION[cfg.benchmark.name],
-        human_instruction=HUMAN_INSTRUCTION[cfg.benchmark.name],
+        system_instruction=system_instruction,
+        human_instruction=human_instruction,
         tasks=INIT_TASKS_FN[cfg.benchmark.name](cfg),
-        fewshots=FEWSHOTS[cfg.benchmark.name],
+        fewshots=fewshots,
         system_prompt=system_message_prompt,
         env=ENVS[cfg.benchmark.name],
         max_steps=cfg.benchmark.max_steps,
         openai_api_key=openai_api_key,
-        llm=cfg.agent.llm,
+        llm=llm_name,
         llm_builder=LLM_CLS,
-        reflection_fewshots=REFLECTION_FEWSHOTS[cfg.benchmark.name],
-        reflection_task_prompt=HUMAN_REFLECTION_INSTRUCTION[cfg.benchmark.name],
-        reflection_system_instruction=SYSTEM_REFLECTION_INSTRUCTION[cfg.benchmark.name],
-        reflection_system_prompt=SYSTEM_INSTRUCTION[cfg.benchmark.name],
+        reflection_fewshots=reflection_fewshots,
+        reflection_task_prompt=reflection_task_prompt,
+        reflection_system_instruction=reflection_system_instruction,
+        reflection_system_prompt=system_instruction,
         max_relfection_depth=cfg.agent.max_reflection_depth if 'max_reflection_depth' in cfg.agent.keys() else 0,
-        system_critique_instructions=SYSTEM_CRITIQUE_INSTRUCTION[cfg.benchmark.name],
-        human_critiques=HUMAN_CRITIQUES,
+        system_critique_instructions=system_critique_instructions,
+        human_critiques=human_critiques,
         max_num_rules=cfg.agent.max_num_rules if 'max_num_rules' in cfg.agent.keys() else 0,
-        rule_template=RULE_TEMPLATE[cfg.benchmark.name],
+        rule_template=rule_template,
         truncate_strategy=cfg.agent.truncate_strategy if 'truncate_strategy' in cfg.agent.keys() else None,
         llm_parser=LLM_PARSER[cfg.benchmark.name],
         observation_formatter=OBSERVATION_FORMATTER[cfg.benchmark.name],
@@ -110,6 +137,7 @@ def main(cfg : DictConfig) -> None:
         buffer_retrieve_ratio=cfg.agent.retrieval_kwargs.buffer_retrieve_ratio,
         max_fewshot_tokens=get_fewshot_max_tokens(cfg.benchmark.name) if cfg.agent.retrieval_kwargs.max_fewshot_tokens == 'auto' else cfg.agent.retrieval_kwargs.max_fewshot_tokens,
     )
+
     if len(dicts) > 0:
         react_agent.load_checkpoint(loaded_dict=dicts[-1], no_load_list=['testing', 'max_relfection_depth', 'fewshot_strategy', 'max_fewshot_tokens'])
         if 'eval_idx_list' in dicts[-1]:
