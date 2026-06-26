@@ -6,25 +6,33 @@
 
 ---
 
-## 🎯 第一步：先跑一下看看效果（5分钟）
+## 🎯 第一步：先看看效果（10秒）
+
+项目里已经预生成了 **5 张 SVG 图表**，不用跑任何代码就能看到：
 
 ```bash
 cd ExpeL-agent
 
+# 直接打开这些文件（双击即可），拖进 PPT/Word
+#   📊 logs/livestream/eval_comparison.svg
+#   📊 logs/livestream/eval_radar.svg
+#   📊 logs/livestream/data_distribution.svg
+#   📊 logs/livestream/continue_rate_comparison.svg
+#   📊 logs/livestream/reward_comparison.svg
+```
+
+如果想重新跑一遍（生成 PNG 版本）：
+
+```bash
 # 1. 安装依赖
 pip install -r requirements.txt
 pip install matplotlib numpy
 
-# 2. 直接跑离线评估（不需要API Key，纯算）
+# 2. 离线评估
 python evaluate_livestream.py
 
-# 3. 出图（所有图表一键生成）
+# 3. 出图
 python make_charts.py
-
-# 4. 看结果
-# 终端会打印表格
-# 数据在 logs/livestream/eval_summary.json
-# 图表在 logs/livestream/*.png（共5张）
 ```
 
 ---

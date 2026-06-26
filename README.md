@@ -30,27 +30,34 @@
 | `data/livestream/safety_rules.jsonl` | **10条安全规则**（违禁/色情/赌博/暴力等） | ✅ 安全机制展示 |
 | `data/livestream/creator_profile.json` | **主播人设**（热情/活泼/亲切） | ✅ 人设卡片、个性化设计 |
 | `envs/livestream/user_simulator.py` | **用户模拟器**（评分+匹配+离开机制） | ✅ 核心模块流程图素材 |
-| `evaluate_livestream.py` | **离线评估脚本** → 自动输出对比图表 | ✅ **直接运行出结果图** |
-| `logs/livestream/eval_summary.json` | 评估结果 JSON 数据 | ✅ 图表数据源（可直接用于 PPT） |
-| `docs/internal_guide.md` | 内部学习文档 | ❌ 仅供内部，不做汇报 |
+| `evaluate_livestream.py` | **离线评估脚本** | ✅ 一键出数据 |
+| `make_charts.py` | **一键出图脚本** | ✅ 自动生成5张图表 |
+| `logs/livestream/*.svg` | **5张 SVG 图表 ✅ 已预生成** | ✅ **直接拖进 PPT，不用跑代码** |
+| `logs/livestream/eval_summary.json` | 评估结果 JSON | ✅ 图表数据源 |
+| `docs/for_teammates.md` | 给队友的文档 | ✅ 队友必读 |
 
 ---
 
 ## ⚡ 让组员 5 分钟跑起来
 
-### 环境准备
+### 🔥 最快的方式：直接拿预生成的 SVG 图
+
+项目里已经预生成了 **5 张 SVG 图表**，打开就能用：
 
 ```bash
-pip install -r requirements.txt
+# 克隆仓库
+git clone https://github.com/lynnhommie/ExpeL-agent.git
+cd ExpeL-agent
+
+# 图片在这里，直接双击打开，拖进 PPT/Word
+#   📊 logs/livestream/eval_comparison.svg          ← 四维柱状对比图
+#   📊 logs/livestream/eval_radar.svg               ← 雷达图
+#   📊 logs/livestream/data_distribution.svg        ← 数据分布
+#   📊 logs/livestream/continue_rate_comparison.svg ← 成败续聊率对比
+#   📊 logs/livestream/reward_comparison.svg        ← 成败奖励对比
 ```
 
-在项目根目录创建 `.env`：
-```
-QWEN_API_KEY=你的API密钥
-LLM_MODEL=qwen-plus
-```
-
-### 你只需要运行这几条命令，就能出图
+### 如果想自己跑一遍（出 PNG）
 
 ```bash
 # 1. 安装依赖
@@ -58,23 +65,17 @@ pip install -r requirements.txt
 pip install matplotlib numpy    # 画图需要
 
 # 2. 评估 + 出图
-python evaluate_livestream.py   # 输出数据
-python make_charts.py           # 生成5张图表
+python evaluate_livestream.py   # 输出数据 → eval_summary.json
+python make_charts.py           # 生成 5 张 PNG 图表
 
 # 3. 查看结果
-# 打开 logs/livestream/eval_comparison.png  ← 四维柱状图
-# 打开 logs/livestream/eval_radar.png       ← 雷达图
-# 打开 logs/livestream/data_distribution.png ← 数据分布
-# 打开 logs/livestream/eval_summary.json    ← 原始数据
+# logs/livestream/eval_comparison.png
+# logs/livestream/eval_summary.json
 ```
 
-### 其他测试命令
+### 完整对话演示（不需要 API Key）
 
 ```bash
-# 测试用户模拟器
-python -c "from envs.livestream.user_simulator import LivestreamUserSimulator; u,r,l = LivestreamUserSimulator().respond('欢迎宝子来直播间！'); print(u,r,l)"
-
-# 演示完整对话流程
 python demo_livestream_conversation.py
 ```
 
@@ -171,15 +172,17 @@ python make_charts.py            # 生成图表 → logs/livestream/
 
 > 在成功会话中，expel_mvp 方案的续聊率达到 **75%**，意味着主播每说4句话，有3句能让用户继续聊下去。
 
-### 图表清单（logs/livestream/）
+### 图表清单（已预生成在 `logs/livestream/`）
 
-| 文件 | 内容 | PPT 适用页 |
-|------|------|-----------|
-| `eval_comparison.png` | 四维柱状对比图 | 第4章评估结果 |
-| `eval_radar.png` | 三策略雷达图 | 第4章评估结果 |
-| `data_distribution.png` | 数据分布饼图+柱状图 | 第3章数据统计 |
-| `continue_rate_comparison.png` | 成功vs失败续聊率对比 | 第4章关键发现 |
-| `reward_comparison.png` | 成功vs失败平均奖励对比 | 第4章辅助数据 |
+| 文件 | 格式 | 内容 | PPT 适用页 |
+|------|------|------|-----------|
+| `eval_comparison.svg` | SVG | 四维柱状对比图（续聊率/奖励/轮次/安全率） | 第4章 评估结果 |
+| `eval_radar.svg` | SVG | 三策略雷达图（baseline/persona/expel_mvp） | 第4章 评估结果 |
+| `data_distribution.svg` | SVG | 数据分布饼图+柱状图 | 第3章 数据统计 |
+| `continue_rate_comparison.svg` | SVG | 成功vs失败会话续聊率对比 | 第4章 关键发现 |
+| `reward_comparison.svg` | SVG | 成功vs失败会话平均奖励对比 | 第4章 辅助数据 |
+
+> SVG 格式可直接拖进 PPT/Word，缩放不失真，无需再跑代码。
 
 ---
 
@@ -305,9 +308,12 @@ gpt-4,500,0.03元,15元
 ## ⚙️ 全部命令速查
 
 ```bash
-# === 出图命令（必做）===
-python evaluate_livestream.py   # 评估 → logs/livestream/eval_summary.json
-python make_charts.py           # 出图 → 5张 PNG（拖进PPT即可用）
+# === 最快拿图（不用跑代码）===
+# 直接打开 logs/livestream/*.svg 拖进 PPT
+
+# === 出图（需要 matplotlib）===
+python evaluate_livestream.py   # 评估 → eval_summary.json
+python make_charts.py           # 出图 → 5张 PNG
 
 # === 测试模拟器 ===
 python -c "from envs.livestream.user_simulator import LivestreamUserSimulator as S; u,r,l = S().respond('你好'); print(u,r,l)"
