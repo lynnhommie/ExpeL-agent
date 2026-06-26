@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 500" width="600" height="500">
+  <style>text{font-family:Arial,sans-serif}.title{font-size:16px;font-weight:bold}.leg{font-size:12px}</style>
+  <text x="300" y="30" text-anchor="middle" class="title">数字人直播 — 三策略雷达对比 (ALL)</text>
+  <!-- 雷达图背景 -->
+  <polygon points="300,400 370,260 300,100 230,260" fill="none" stroke="#ddd" stroke-width="1"/>
+  <polygon points="300,400 335,330 300,250 265,330" fill="none" stroke="#ddd" stroke-width="0.5"/>
+  <polygon points="300,400 318,300 300,200 282,300" fill="none" stroke="#ddd" stroke-width="0.5"/>
+  <!-- 轴线 -->
+  <line x1="300" y1="400" x2="300" y2="100" stroke="#ccc" stroke-width="1"/>
+  <line x1="300" y1="400" x2="370" y2="260" stroke="#ccc" stroke-width="1"/>
+  <line x1="300" y1="400" x2="230" y2="260" stroke="#ccc" stroke-width="1"/>
+  <line x1="300" y1="400" x2="300" y2="400" stroke="#ccc" stroke-width="1"/>
+  <!-- 标签 -->
+  <text x="300" y="85" text-anchor="middle" font-size="12" font-weight="bold">平均轮次</text>
+  <text x="390" y="260" font-size="12" font-weight="bold">续聊率</text>
+  <text x="300" y="420" text-anchor="middle" font-size="12" font-weight="bold">平均奖励</text>
+  <text x="210" y="260" text-anchor="end" font-size="12" font-weight="bold">安全率</text>
+  <!-- baseline (红) - 几乎都在中心 -->
+  <!-- baseline: 轮次0.5, 续聊0, 奖励0, 安全1.0 -->
+  <polygon points="300,330 300,400 300,400 300,100" fill="#e74c3c" fill-opacity="0.15" stroke="#e74c3c" stroke-width="2" stroke-dasharray="5,3"/>
+  <!-- persona (橙) -->
+  <!-- 轮次0.5, 续聊0.65, 奖励0.54, 安全1.0 -->
+  <polygon points="300,330 345,309 300,345 300,100" fill="#f39c12" fill-opacity="0.15" stroke="#f39c12" stroke-width="2"/>
+  <!-- expel_mvp (绿) - 最大 -->
+  <!-- 轮次0.5, 续聊1.0, 奖励1.0, 安全1.0 -->
+  <polygon points="300,330 370,260 300,342 300,100" fill="#2ecc71" fill-opacity="0.15" stroke="#2ecc71" stroke-width="2"/>
+  <!-- 图例 -->
+  <rect x="230" y="445" width="12" height="12" fill="#e74c3c"/><text x="248" y="456" class="leg">baseline</text>
+  <rect x="330" y="445" width="12" height="12" fill="#f39c12"/><text x="348" y="456" class="leg">persona</text>
+  <rect x="430" y="445" width="12" height="12" fill="#2ecc71"/><text x="448" y="456" class="leg">expel_mvp</text>
+</svg>

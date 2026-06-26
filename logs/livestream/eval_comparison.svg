@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500">
+  <style>
+    text { font-family: Arial, sans-serif; }
+    .title { font-size: 20px; font-weight: bold; }
+    .subtitle { font-size: 11px; }
+    .bar-label { font-size: 11px; font-weight: bold; }
+    .axis-label { font-size: 13px; font-weight: bold; }
+    .val-label { font-size: 10px; font-weight: bold; fill: #333; }
+  </style>
+
+  <!-- 标题 -->
+  <text x="450" y="35" text-anchor="middle" class="title">数字人直播对话系统 — 三策略对比评估</text>
+
+  <!-- 图1: 续聊率 -->
+  <text x="125" y="70" text-anchor="middle" class="axis-label">续聊率(%)</text>
+  <!-- baseline: 0.0% - 灰色条 -->
+  <rect x="55" y="430" width="50" height="0" fill="#e74c3c" rx="2"/>
+  <text x="80" y="440" text-anchor="middle" class="val-label">0.0%</text>
+  <!-- persona: 25.0% -->
+  <rect x="115" y="355" width="50" height="75" fill="#f39c12" rx="2"/>
+  <text x="140" y="347" text-anchor="middle" class="val-label">25.0%</text>
+  <!-- expel_mvp: 38.6% -->
+  <rect x="175" y="314" width="50" height="116" fill="#2ecc71" rx="2"/>
+  <text x="200" y="306" text-anchor="middle" class="val-label">38.6%</text>
+  <!-- 图例 -->
+  <rect x="58" y="462" width="12" height="12" fill="#e74c3c"/>
+  <text x="73" y="473" class="subtitle">baseline</text>
+  <rect x="118" y="462" width="12" height="12" fill="#f39c12"/>
+  <text x="133" y="473" class="subtitle">persona</text>
+  <rect x="178" y="462" width="12" height="12" fill="#2ecc71"/>
+  <text x="193" y="473" class="subtitle">expel_mvp</text>
+
+  <!-- 图2: 平均奖励 -->
+  <text x="375" y="70" text-anchor="middle" class="axis-label">平均奖励分</text>
+  <!-- 基线: -1.0 -->
+  <rect x="305" y="440" width="50" height="-10" fill="#e74c3c" rx="2"/>
+  <text x="330" y="455" text-anchor="middle" class="val-label">-1.0</text>
+  <!-- persona: 0.758 -->
+  <rect x="365" y="347" width="50" height="83" fill="#f39c12" rx="2"/>
+  <text x="390" y="339" text-anchor="middle" class="val-label">0.758</text>
+  <!-- expel_mvp: 1.394 -->
+  <rect x="425" y="290" width="50" height="140" fill="#2ecc71" rx="2"/>
+  <text x="450" y="282" text-anchor="middle" class="val-label">1.394</text>
+  <!-- 0号线 -->
+  <line x1="290" y1="430" x2="490" y2="430" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- 图3: 平均轮次 -->
+  <text x="625" y="70" text-anchor="middle" class="axis-label">平均对话轮次</text>
+  <!-- 都是3.0 -->
+  <rect x="555" y="370" width="50" height="60" fill="#e74c3c" rx="2"/>
+  <text x="580" y="362" text-anchor="middle" class="val-label">3.0</text>
+  <rect x="615" y="370" width="50" height="60" fill="#f39c12" rx="2"/>
+  <text x="640" y="362" text-anchor="middle" class="val-label">3.0</text>
+  <rect x="675" y="370" width="50" height="60" fill="#2ecc71" rx="2"/>
+  <text x="700" y="362" text-anchor="middle" class="val-label">3.0</text>
+
+  <!-- 图4: 安全率 -->
+  <text x="825" y="70" text-anchor="middle" class="axis-label">安全处理率(%)</text>
+  <!-- 都是97% -->
+  <rect x="755" y="303" width="50" height="127" fill="#e74c3c" rx="2"/>
+  <text x="780" y="295" text-anchor="middle" class="val-label">97.0%</text>
+  <rect x="815" y="303" width="50" height="127" fill="#f39c12" rx="2"/>
+  <text x="840" y="295" text-anchor="middle" class="val-label">97.0%</text>
+  <rect x="875" y="303" width="50" height="127" fill="#2ecc71" rx="2"/>
+  <text x="900" y="295" text-anchor="middle" class="val-label">97.0%</text>
+</svg>
