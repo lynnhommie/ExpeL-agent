@@ -13,17 +13,18 @@ cd ExpeL-agent
 
 # 1. 安装依赖
 pip install -r requirements.txt
+pip install matplotlib numpy
 
 # 2. 直接跑离线评估（不需要API Key，纯算）
 python evaluate_livestream.py
 
-# 3. 看结果
+# 3. 出图（所有图表一键生成）
+python make_charts.py
+
+# 4. 看结果
 # 终端会打印表格
 # 数据在 logs/livestream/eval_summary.json
-
-# 4. 出图（装了 matplotlib 的话）
-pip install matplotlib numpy
-python generate_report_charts.py
+# 图表在 logs/livestream/*.png（共5张）
 ```
 
 ---
@@ -34,14 +35,14 @@ python generate_report_charts.py
 
 | 图片 | 在哪 | 怎么得到 |
 |------|------|---------|
-| **三策略对比柱状图** | `logs/livestream/eval_comparison.png` | 运行 `python evaluate_livestream.py`（需要装了 matplotlib） |
-| **三策略雷达图** | `logs/livestream/eval_radar.png` | 运行 `python generate_report_charts.py` |
-| **数据分布饼图+柱状图** | `logs/livestream/data_distribution.png` | 运行 `python generate_report_charts.py` |
+| **三策略对比柱状图** | `logs/livestream/eval_comparison.png` | 运行 `python make_charts.py` |
+| **三策略雷达图** | `logs/livestream/eval_radar.png` | 运行 `python make_charts.py` |
+| **数据分布饼图+柱状图** | `logs/livestream/data_distribution.png` | 运行 `python make_charts.py` |
+| **成功vs失败续聊率对比** | `logs/livestream/continue_rate_comparison.png` | 运行 `python make_charts.py` |
+| **成功vs失败奖励对比** | `logs/livestream/reward_comparison.png` | 运行 `python make_charts.py` |
 | **学习曲线图**（训练才会出） | `logs/livestream/expel/*_logs_stats.png` | 运行 `python train.py ...` |
 
 ### 如果 matplotlib 没装
-
-`generate_report_charts.py` 会提示你安装，或者直接运行：
 
 ```bash
 pip install matplotlib numpy

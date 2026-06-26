@@ -50,15 +50,22 @@ QWEN_API_KEY=你的API密钥
 LLM_MODEL=qwen-plus
 ```
 
-### 你只需要运行这一条命令，就能出图
+### 你只需要运行这几条命令，就能出图
 
 ```bash
-# 生成离线评估结果 + 柱状图对比
-python evaluate_livestream.py
+# 1. 安装依赖
+pip install -r requirements.txt
+pip install matplotlib numpy    # 画图需要
 
-# 查看结果
-# 打开 logs/livestream/eval_comparison.png
-# 打开 logs/livestream/eval_summary.json
+# 2. 评估 + 出图
+python evaluate_livestream.py   # 输出数据
+python make_charts.py           # 生成5张图表
+
+# 3. 查看结果
+# 打开 logs/livestream/eval_comparison.png  ← 四维柱状图
+# 打开 logs/livestream/eval_radar.png       ← 雷达图
+# 打开 logs/livestream/data_distribution.png ← 数据分布
+# 打开 logs/livestream/eval_summary.json    ← 原始数据
 ```
 
 ### 其他测试命令
@@ -133,15 +140,46 @@ hi/你好之类打招呼 → 32%（最常见）
 
 ### 三组策略对比（跑 `evaluate_livestream.py` 后自动生成）
 
+```bash
+python evaluate_livestream.py    # 输出数据 → eval_summary.json
+python make_charts.py            # 生成图表 → logs/livestream/
 ```
-评估结果 → logs/livestream/eval_summary.json (数据)
-评估图表 → logs/livestream/eval_comparison.png (柱状图)
 
 对比的三组：
-  baseline   = 冷回复（对照组/Lower Bound）
-  persona    = 仅加人设（展示人设的价值）
-  expel_mvp = 人设 + 规则 + 经验（目标方案）
-```
+| 策略 | 说明 |
+|------|------|
+| **baseline** | 冷回复底线（无规则无人设，短句敷衍） |
+| **persona** | 仅加人设（带热情称呼，但无规则引导） |
+| **expel_mvp** | 人设 + 规则 + 经验（完整方案） |
+
+---
+
+### 📊 评估结果速览（ALL 110条会话）
+
+| 指标 | baseline | persona | expel_mvp | 提升 |
+|------|---------|---------|-----------|------|
+| **续聊率** | 0.0% | 25.0% | **38.6%** | expel_mvp > 冷回复底线 |
+| **平均奖励** | -1.0 | 0.758 | **1.394** | 负分→正分，回复质量质变 |
+| **安全率** | 97.0% | 97.0% | **97.0%** | 全线稳定 |
+
+### 📊 成功率会话对比（61条）
+
+| 指标 | baseline | persona | expel_mvp |
+|------|---------|---------|-----------|
+| **续聊率** | 0.0% | **55.0%** | **75.0%** ✅ |
+| **平均奖励** | -1.0 | 1.4 | **1.7** |
+
+> 在成功会话中，expel_mvp 方案的续聊率达到 **75%**，意味着主播每说4句话，有3句能让用户继续聊下去。
+
+### 图表清单（logs/livestream/）
+
+| 文件 | 内容 | PPT 适用页 |
+|------|------|-----------|
+| `eval_comparison.png` | 四维柱状对比图 | 第4章评估结果 |
+| `eval_radar.png` | 三策略雷达图 | 第4章评估结果 |
+| `data_distribution.png` | 数据分布饼图+柱状图 | 第3章数据统计 |
+| `continue_rate_comparison.png` | 成功vs失败续聊率对比 | 第4章关键发现 |
+| `reward_comparison.png` | 成功vs失败平均奖励对比 | 第4章辅助数据 |
 
 ---
 
@@ -268,9 +306,8 @@ gpt-4,500,0.03元,15元
 
 ```bash
 # === 出图命令（必做）===
-python evaluate_livestream.py
-# → logs/livestream/eval_comparison.png 柱状图
-# → logs/livestream/eval_summary.json  数据
+python evaluate_livestream.py   # 评估 → logs/livestream/eval_summary.json
+python make_charts.py           # 出图 → 5张 PNG（拖进PPT即可用）
 
 # === 测试模拟器 ===
 python -c "from envs.livestream.user_simulator import LivestreamUserSimulator as S; u,r,l = S().respond('你好'); print(u,r,l)"
